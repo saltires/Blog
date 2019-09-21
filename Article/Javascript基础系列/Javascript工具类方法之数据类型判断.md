@@ -1,7 +1,7 @@
-### 数据类型判断之typeof
+﻿### 数据类型判断之typeof
 typeof可以用来判断==原始数据类型==，如string、undefined、number、boolean这四个标准的ES5原始数据类型以及==函数类型:==
 
-```
+```javascript
 typeof 'foobar' // string 可以判断
 typeof 99 // number 可以判断
 typeof true // boolean 可以判断
@@ -22,7 +22,7 @@ string number boolean undefined function symbol  //（都是小写）
 
 ### 模拟实现一个instanceof函数
 
-```
+```javascript
 function instanceof2(foo, bar) {
     var left = Object.getPrototypeOf(foo);
     var right = bar.prototype;
@@ -47,7 +47,7 @@ instanceof2('foobar', Number); // false
 ### 数据类型判断之Object.prototype.toString
 ###### ① 看看toString方法返回什么
 
-```
+```javascript
 数值：返回[object Number]。
 字符串：返回[object String]。
 布尔值：返回[object Boolean]。
@@ -71,7 +71,7 @@ toString方法是定义在Object对象原型上的方法，虽然部分数据类
 
 下面是一些实例
 
-```
+```javascript
 Object.prototype.toString.call(99) // "[object Number]"
 Object.prototype.toString.call('foobar') // "[object String]"
 Object.prototype.toString.call(true) // "[object Boolean]"
@@ -91,7 +91,7 @@ Object.prototype.toString.call(Symbol()) // "[object Symbol]"
 
 ###### ③ 利用toString方法来判断数据类型
 
-```
+```javascript
 // Array.isArray是很常用的方法，利用toString可以非常轻松可以实现一个它的polyfill
 
 function isArray2(foobar) {
@@ -113,7 +113,7 @@ typeof new Number(99) === 'number' // false 需要注意二者的区别,不过�
 ### 用toString方法封装一些工具类方法
 基于toString方法的这些特性，可以将一些判断数据类型的方法封装到一个工具类对象中，假设我们现在有Box这个全局对象
 
-```
+```javascript
 (function(){
    var array = ['Null','Undefined','Object','Array','String','Number', 'Boolean','Function','RegExp','Date']; 
 
