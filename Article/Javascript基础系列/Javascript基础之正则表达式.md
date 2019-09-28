@@ -1,0 +1,112 @@
+### 正则表达式能做什么
+
+#####  ① 获取两个指定字符串之间的特殊字符
+
+假设有一个很长的字符串，现在要取出两个特殊字符之间的所有字符，以下表达式可以实现
+
+```javascript
+// (1) 实例一 获取 spread 和 to 之间的所有字符
+var str = 'The manufacturers spread the idea of the products to attract more people to purchase';
+var reg1 = /(?<=spread).+(?=to)/; // 贪婪模式
+
+str.match(reg1)
+// [" the idea of the products to attract more people ", index: 24, input: "The manufacturers spread the idea of the products to attract more people to purchase", groups: undefined]
+
+var reg2 = /(?<=spread).+?(?=to)/; // 懒惰模式
+
+str.match(reg2)
+// [" the idea of the products ", index: 24, input: "The manufacturers spread the idea of the products to attract more people to purchase", groups: undefined]
+
+// (2) 获取两个指定字符串之间的特殊字符之实例二
+```
+这个正则主要涉及到了三种知识：
+
+-  贪婪与懒惰 
+-  (?=exp) 零宽度正预测先行断言，它断言自身出现的位置的后面能匹配表达式exp
+-  (?<=exp) 零宽度正回顾后发断言，它断言自身出现的位置的前面能匹配表达式exp
+
+使用这两种方式截取到的字符串两边都是有空白符的，如果不需要可以手动去掉
+
+下面就介绍一种去掉字符串两边空白字符的正则：
+
+##### ② 去除字符串两边的空白字符
+
+就以上面第一个实例的结果做样例吧
+
+
+```javascript
+// 先在String的原型上挂载一个trim函数
+
+String.prototype.trim = function() {
+    return this.replace(/(^\s*)|(\s*$)/g, "");
+}
+
+var string1 = ' the idea of the products to attract more people '; // 上面第一个实例的结果（贪婪模式下）
+var string2 = ' the idea of the products '; // 上面第一个实例的结果（非贪婪模式下）
+
+string1.trim(); // 'the idea of the products to attract more people'
+string2.trim(); // 'the idea of the products'
+```
+
+##### ③ 判断字符串中是否有某个单词以特殊字符结尾
+
+还是以上面例子的最终结果为数据源
+
+对于 'the idea of the products to attract more people' 这个字符串，如果想判断这个字符串中是否有单词以dea结尾，以下正则可以判断：
+
+
+```javascript
+var string = 'the idea of the products to attract more people';
+var reg = /\b.*(?=dea\b)/;
+var reg1 = /\b.*(?=ade\b)/;
+
+reg.test('the idea of the products to attract more people'); // true
+reg1.test('the idea of the products to attract more people'); // false
+
+// 我们知道，string中有idea这个单词，所以结果为true,但是没有以dea结尾的单词，所以reg1的test函数运行结果为false
+```
+
+##### ④ 过滤js文件和exe文件
+
+如果要过滤js文件和exe文件，可以建立这样一个表达式，字符串只要是以.js或者是.exe作为后缀，就不匹配，其他任意条件都匹配，如下：
+
+
+```javascript
+var reg = /^[^.]+$|\.(?!(js|exe)$)(?!.*\.(js|exe)$)|^.{0}$/;
+
+// 看看几个例子
+'foo.js'.search(reg); // -1 相当于test方法的false
+'bar.exe'.search(reg); // -1 相当于test方法的false
+'bar.exee'.search(reg);  // 3 相当于test方法的true
+'js.foo'.search(reg); // 2 相当于test方法的true
+'js.foo'.search(reg); // 2 相当于test方法的true
+'foobar'.search(reg); // 0 相当于test方法的true
+''.search(reg); // 0 相当于test方法的true
+'foo.js.js'.search(reg); // -1 相当于test方法的false
+'foo.js.jss'.search(reg); // 3 相当于test方法的true
+'.js.'.search(reg); // 0 相当于test方法的true
+'sj.jsj'.search(reg); // 2 相当于test方法的true
+
+// 为了方便解析，将表达式拆分为三个大部分，第二部分中又分为三个小部分
+
+// (1.0) ^[^.]+$
+// (2.0) \.(?!(js|exe)$)(?!.*\.(js|exe)$)
+// (2.1) \.
+// (2.2) (?!(js|exe)$)
+// (2.3) (?!.*\.(js|exe)$)
+// (3.0) ^.{0}$
+```
+
+这个表达式需要分开来看：
+
+第一步：先判断字符串中是否含有.符号，没有则直接匹配，这是【1.0】部分起的作用
+
+第二步：这一步我们认为表达式肯定具有.符号，这时先匹配.符号，这是【2.1】部分起的作用
+
+第三步：如果.符号后面紧跟着exe或者js,并且在js和exe后没有任何字符，也就是说js或exe是尾部,这时它就是exe文件或者是js文件，我们肯定是不能匹配的，
+
+这是【2.2】部分起的作用
+
+第四步：如果存在多个.符号，我们应该以最后一个.符号为准，这是【2.3】部分起的作用
+
+第五步：上面的步骤全部写完还是无法处理空字符串情况的，需要单独做处理，这是【3.0】部分起的作用
