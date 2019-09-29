@@ -103,10 +103,68 @@ var reg = /^[^.]+$|\.(?!(js|exe)$)(?!.*\.(js|exe)$)|^.{0}$/;
 
 第二步：这一步我们认为表达式肯定具有.符号，这时先匹配.符号，这是【2.1】部分起的作用
 
-第三步：如果.符号后面紧跟着exe或者js,并且在js和exe后没有任何字符，也就是说js或exe是尾部,这时它就是exe文件或者是
-
-js文件，我们肯定是不能匹配的，这是【2.2】部分起的作用
+第三步：如果.符号后面紧跟着exe或者js,并且在js和exe后没有任何字符，也就是说js或exe是尾部,这时它就是exe文件或者是js文件，我们肯定是不能匹配的，这是【2.2】部分起的作用
 
 第四步：如果存在多个.符号，我们应该以最后一个.符号为准，这是【2.3】部分起的作用
 
 第五步：上面的步骤全部写完还是无法处理空字符串情况的，需要单独做处理，这是【3.0】部分起的作用
+
+##### ⑤ 判断字符串是否包含指定字符串
+
+这种判断应该算是经常用到的功能了，例如判断url地址是否包含特定字符串等，下面看一个实例：
+
+
+```javascript
+// 需求 1：判断下面url地址中是否包含resizeFlag
+
+var foo = "http://localhost:8002/Home/Login#durationmgr/dailyTask/workPanel?resizeFlag=false";
+var bar = "http://localhost:8002/Home/Login#durationmgr/dailyTask/workPanel";
+
+var reg = /resizeFlag/; // 这真是简单有效，但是它只能用于最简单的匹配
+
+reg.test(foo); // true
+reg.test(bar); // false
+
+// 下面看另一种方式
+var reg1 = /^(?=.*?resizeFlag).*$/; // 正向前瞻，匹配包含resizeFlag的字符串
+var reg2 = /^(?!.*?resizeFlag).*$/; // 反向前瞻，匹配不包含resizeFlag的字符串
+
+reg1.test(foo); // true
+reg1.test(bar); // false
+reg2.test(foo); // false
+reg2.test(bar); // true
+
+// 需求 2：判断下面url地址中是否包含resizeFlag，如果有，则取出从#号到?号之间的任意字符
+
+var foo = "http://localhost:8002/Home/Login#durationmgr/dailyTask/workPanel?resizeFlag=false";
+var bar = "http://localhost:8002/Home/Login#durationmgr/dailyTask/workPanel?flight=1";
+
+// 解决方式 1, 把判断和取出特定字符分开去做
+function getUrl(url, flagString) {
+    if (!url || !flagString) {
+        return new Error('getUrl need a url');
+    }
+    
+    var urlT = url,
+        flagStringT = flagString,
+        reg = new RegExp(flagStringT),
+        reg1 = /^.*#(.*)\?{1}.*$/;
+        
+    if (!reg.test(urlT)) {
+        return;
+    }
+    
+    return reg1.exec(urlT)[1];
+}
+
+getUrl(foo, 'resizeFlag') // "durationmgr/dailyTask/workPanel"
+getUrl(bar, 'resizeFlag') // undefined
+
+// 解决方式 2, 把判断和取出特定字符放在一个表达式里
+var reg2 = /^.*#(.*)\?{1}(?=.*?resizeFlag).*$/;
+
+reg2.exec(foo)[1]; // "durationmgr/dailyTask/workPanel"
+reg2.exec(bar) // null
+
+// 显然解决方式 2代码就简洁很多了，这就是正向前瞻的威力
+```
