@@ -216,7 +216,6 @@ reg1.test('1ddDDff$1234567891234'); // false 长度超过16位
 
 ```Javascript
 // 直接上实例
-
 var reg = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/;
 
 reg.test('2019-01-02'); // true
@@ -238,4 +237,89 @@ reg1.test('2019-01-2'); // true
 reg1.test('2019-00-01'); // false
 reg1.test('2019-01-00'); // false
 reg1.test('0000-01-02'); // false
+
+// 最终版本, 考虑到了所有情况,但是这里限制死了链接符为-,并且月和日的格式为两位数(01,02,03,04,....)
+var reg = /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$/;
+
+reg.test('2019-01-02') // true
+reg.test('2019-02-29') // false 2月没有29号
+reg.test('2019-02-28') // true
+reg.test('2019-13-02') // false 没有13月
+reg.test('2019-08-32'); // false 没有32号
+reg.test('2019-08-31'); // true
+```
+
+#### ⑧ 实现模板字符串替换函数
+---
+模板字符串替换是很常见的，ejs模板引擎、Vue的模板字符串替换、ES6的模板字符串替换，在这里我们实现一个基本的模板字符串替换函数
+
+
+```
+var reg = 'I am a {job}, Do you like my {book} and {job}',
+    data = {
+       job: 'teacher',
+       book: 'Javascript高级编程',
+    };
+
+function renderTpl(reg, data) {
+    if (!reg) {
+        return new Error('reg is need');
+    }
+
+    var arr = reg.match(/\{.+?\}/g);
+
+    if (arr && arr.length <= 0) {
+        return;
+    }
+
+    var arr = arr.map(function(item) {
+        return item.replace(/\{|\}/g, '');
+    })
+
+    for (var i = 0, length = arr.length; i < length; i ++) {
+        var item = arr[i];
+        var regExpr = '/\{' + item + '\}/g';
+        reg = reg.replace(eval(regExpr), data[item]);
+    }
+
+    return reg;
+}
+
+renderTpl(reg, data); // "I am a teacher, Do you like my Javascript高级编程 and teacher"
+```
+
+#### ⑨ 实现千分位标注
+---
+实现千分位标注的需求常见于金融交易软件，对于大额数字的展示非常有效
+```Javascript
+    function addSeparator(str, sep) {
+        if (!str) {
+            return '';
+        }
+        var strT = str + '',
+            sepT = sep || ',',
+            arr = strT.split('.'),
+            re = /(\d+)(\d{3})/;
+
+        var integer = arr[0],
+            decimal = arr.length <= 1 ? "" : '.' + arr[1];
+
+        while (re.test(integer)) {
+            integer = integer.replace(re, "$1" + sepT + "$2")
+        }
+
+        return integer + decimal;
+    }
+
+    console.log(addSeparator(-1987654321.23)); // -1,987,654,321.23
+```
+
+这种需求也会带来一种困扰，因为实际展示的不再是数字了
+
+如果页面中需要再次对这个数字进行取值运算，取到的并不是我们想要的值，因此在实现千分位标注之前就可以利用html标签的属性把原始值存储起来
+
+如:
+
+```html
+<span data-amount='-1987654321.23'>-1,987,654,321.23</span>
 ```
