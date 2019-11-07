@@ -1,4 +1,4 @@
-﻿## 写在前面
+﻿﻿## 写在前面
 这篇文章全都是实例分析，有关所有文章中用到的正则表达式知识，请参阅：
 
 > ##### [30分钟入门正则表达式](http://www.cnblogs.com/hustskyking/archive/2013/06/04/RegExp.html)
@@ -358,6 +358,11 @@ console.log(arr2);
 
 console.log(x.match(reg));
 // ["a.xxx.com", " b.xxx.com", " c.xxx.com"]
+
+var reg1 = /([a-zA-Z])(?=\.(?:[a-zA-Z]+)\.com\s?)/g;
+
+console.log(x.match(reg1));
+// ["a", "b", "c"]
 
 ```
 
