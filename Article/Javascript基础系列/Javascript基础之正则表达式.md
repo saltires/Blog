@@ -1,7 +1,7 @@
-## 写在前面
+﻿## 写在前面
 这篇文章全都是实例分析，有关所有文章中用到的正则表达式知识，请参阅：
 
-##### [30分钟入门正则表达式](http://www.cnblogs.com/hustskyking/archive/2013/06/04/RegExp.html)
+> ##### [30分钟入门正则表达式](http://www.cnblogs.com/hustskyking/archive/2013/06/04/RegExp.html)
 
 这篇文章关于正则的知识介绍的非常全面，值得多看几遍
 
@@ -331,3 +331,39 @@ renderTpl(reg, data); // "I am a teacher, Do you like my Javascript高级编程 
 ```html
 <span data-amount='-1987654321.23'>-1,987,654,321.23</span>
 ```
+
+### ⑩ 循环使用exec方法
+---
+循环使用exec方法实现与match方法同样的“匹配所有”的功能，并且获得的信息更全面
+```Javascript
+var x = "a.xxx.com b.xxx.com c.xxx.com";
+var reg = /(.*?)\.(?:.*?)\.com\s?/g; // 注意点1：这里必须有全局修饰符g
+
+var arr = [], arr2 = [];
+
+while (item = reg.exec(x)) { // 注意点2: 这里可使用exec执行返回的结果作为循环结束的条件
+    arr2.push(item);
+    arr.push(item[1]);
+}
+
+console.log(arr);
+// ["a", "b", "c"]
+
+console.log(arr2);
+<!--
+["a.xxx.com ", "a", index: 0, input: "a.xxx.com b.xxx.com c.xxx.com", groups: undefined]
+["b.xxx.com ", "b", index: 10, input: "a.xxx.com b.xxx.com c.xxx.com", groups: undefined]
+["c.xxx.com", "c", index: 20, input: "a.xxx.com b.xxx.com c.xxx.com", groups: undefined]
+-->
+
+console.log(x.match(reg));
+// ["a.xxx.com", " b.xxx.com", " c.xxx.com"]
+
+```
+
+
+
+
+
+
+
