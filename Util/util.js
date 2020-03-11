@@ -1,5 +1,7 @@
 import {
-         camelCase
+         camelCase,
+         endsWith,
+         startsWith
        }
        from "./util_String/util_String.js"
 
@@ -12,9 +14,17 @@ class Util {
     version() {
         return this._version;
     }
-
+    // 字符串转驼峰
     camelCase(string) {
         return camelCase(string);
+    }
+    // 判断字符串是否以某特殊字符结尾
+    endsWith(string, match) {
+        return endsWith(string, match);
+    }
+    // 判断字符串是否以某特殊字符开头
+    startsWith(string, match) {
+        return startsWith(string, match);
     }
 
 }

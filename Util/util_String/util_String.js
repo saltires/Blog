@@ -56,23 +56,45 @@ function camelCase(string) {
 /**
  * @author jxye
  * @date 2020/3/11
- * @Description: 大写字母和小写字母之间互相转换的方法，如果传入小写，传出大写.flag表示是否强制转换，为true则强制转为大写，
- * 为false强制转为小写，不传按toggle处理
- * @example:
+ * @Description: 判断某个字符串是否以某特殊字符结尾,尾部空格会被忽略
+ * @example: endsWith("foobar", "bar") // true   endsWith("foobar", "foo") // false
 */
-
-function toggleCase(string, flag) {
-    let error,
-        result;
-
-    if (!string) {
-        error = "toggleCase调用时参数不能为空";
+function endsWith(string, match) {
+    if (!string || !match) {
+        return new Error("endsWith函数调用时参数不能为空");
     }
 
+    if (string === match) {
+        return true;
+    }
 
+    let reg = new RegExp(match.replace(/\s*$/g, "") + "$");
+
+    return reg.test(string.replace(/\s*$/g, ""));
+}
+
+/**
+ * @author jxye
+ * @date 2020/3/11
+ * @Description: 判断某个字符串是否以某特殊字符开头,头部空格会被忽略
+ * @example: startsWith("foobar", "fo") // true startsWith("foobar", "v") // false
+ */
+function startsWith(string, match) {
+    if (!string || !match) {
+        return new Error("startsWith函数调用时参数不能为空");
+    }
+
+    if (string === match) {
+        return true;
+    }
+
+    let reg = new RegExp("^" + match.replace(/^\s*/g, ""));
+
+    return reg.test(string.replace(/^\s*/g, ""));
 }
 
 export {
     camelCase,
-    toggleCase
+    endsWith,
+    startsWith
 }
