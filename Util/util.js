@@ -1,9 +1,12 @@
 import {
-         camelCase,
-         endsWith,
-         startsWith
-       }
-       from "./util_String/util_String.js"
+    camelCase,
+    endsWith,
+    startsWith
+} from "./util_String/util_String.js"
+
+import {
+    hasClass
+} from "./util_String/util_Dom.js"
 
 
 class Util {
@@ -25,6 +28,10 @@ class Util {
     // 判断字符串是否以某特殊字符开头
     startsWith(string, match) {
         return startsWith(string, match);
+    }
+    // 判断元素是否含有某个class
+    hasClass(ele, defClass) {
+        return hasClass(ele, defClass);
     }
 
 }
