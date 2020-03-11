@@ -12,15 +12,7 @@ class Util {
     version() {
         return this._version;
     }
-    /* 英文字符串转驼峰
-    *  _.camelCase('Foo Bar');
-    *      => 'fooBar'
-    *  _.camelCase('--foo-bar--');
-    *      => 'fooBar'
-    *  _.camelCase('FOO BAR QI#ZH');
-    *      => 'fooBarQiZh'
-    *
-    */
+
     camelCase(string) {
         return camelCase(string);
     }
