@@ -6,7 +6,11 @@ import {
 
 import {
     hasClass
-} from "./util_String/util_Dom.js"
+} from "./util_Dom/util_Dom.js"
+
+import {
+    type
+} from "./util_Common/util_Common.js"
 
 
 class Util {
@@ -35,6 +39,9 @@ class Util {
     }
 
 }
+
+// 将判断数据类型的方法载体（type）赋值给Util的静态属性type
+Util.type = type;
 
 export {
     Util
