@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .container{
+            width:400px;
+        }
+        img{
+            width:400px;
+            height:600px;//不能加100%；加指定高度才可以
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/qrcodes/17913331/QQ%E5%9B%BE%E7%89%8720190517105124.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/320/h/320" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+    <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
+</div>
+<script>
+    class LazyLoad{
+        constructor(className){
+            this.imgList = [...document.querySelectorAll(className)];
+            this.judge();
+            this.bindEvent();
+        }
+        // 防抖函数
+        debounce(fn,delay){
+            let timer = null;
+            return function(){
+                if(timer){
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(fn,delay);
+            }
+        }
+        // 监听滚动条
+        bindEvent(){
+            window.addEventListener('scroll',this.debounce(()=>{
+                this.imgList.length && this.judge();
+            },200))
+        }
+        // 判断是否在可视范围
+        judge(){
+            let imgs = this.imgList;
+            for(let i = 0;i < imgs.length;i++){
+                if(imgs[i].getBoundingClientRect().top <= window.innerHeight){
+                    this.load(imgs[i],i);
+                }
+            }
+        }
+        // 将loading图替换为真实地址，加载图片
+        load(el,index){
+            let src = el.getAttribute('data-src');
+            el.src = src;
+            //this.imgList.splice(index,1);
+        }
+    }
+    const lazy = new LazyLoad('.lazy')
+</script>
+</body>
+</html>

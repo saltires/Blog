@@ -4,41 +4,28 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        .box {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            width: 10px;
-            height: 100px;
-            background-color: orangered;
-            transition: transform 1s ease-in-out;
-            border-radius: 5px;
+        div {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #0ff;
+            animation: move 4s cubic-bezier(0.6, -0.28, 0.74, 0.05) 3 alternate both;
         }
-        .box:hover {
-            transform-origin: left bottom;
+        div:hover {
+            animation-play-state: paused;
+        }
+        @keyframes move {
+          100% {
+              transform: translate(200px, 0);
+          }
         }
     </style>
 </head>
 <body>
 
-<div><p>Hello</p></div>
+<div></div>
 
 <script src="../Util/index.js" type="module"></script>
-
-<script>
-    var div = document.querySelector('div');
-    var p = document.querySelector('p');
-
-    function callback(event) {
-        var tag = event.currentTarget.tagName;
-        console.log('Tag: ' + tag); // 没有任何输出
-    }
-
-    div.addEventListener('click', callback, true);
-
-    var click = new Event('click');
-    p.dispatchEvent(click);
-</script>
 
 </body>
 </html>
