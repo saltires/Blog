@@ -30,45 +30,37 @@
     <img src="ing.gif" data-src="https://upload.jianshu.io/users/upload_avatars/17913331/962b25d6-e6c8-403f-afca-c1feeeb66c8b?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120" class="lazy">
 </div>
 <script>
-    class LazyLoad{
-        constructor(className){
-            this.imgList = [...document.querySelectorAll(className)];
+    class LazyLoad {
+        constructor(className) {
+            this.imgList  = [...document.querySelectorAll(className)];
             this.judge();
             this.bindEvent();
         }
-        // 防抖函数
-        debounce(fn,delay){
+        debounce(fn ,delay) {
             let timer = null;
-            return function(){
-                if(timer){
+            return function () {
+                if (timer) {
                     clearTimeout(timer);
                 }
-                timer = setTimeout(fn,delay);
+                timer = setTimeout(fn, delay);
             }
         }
-        // 监听滚动条
-        bindEvent(){
-            window.addEventListener('scroll',this.debounce(()=>{
-                this.imgList.length && this.judge();
-            },200))
+        bindEvent() {
+            window.addEventListener("scroll", () => {
+                this.imgList.length && this.judge()
+            })
         }
-        // 判断是否在可视范围
-        judge(){
-            let imgs = this.imgList;
-            for(let i = 0;i < imgs.length;i++){
-                if(imgs[i].getBoundingClientRect().top <= window.innerHeight){
-                    this.load(imgs[i],i);
+        judge() {
+            for (let i = 0; i < this.imgList.length; i++) {
+                if (this.imgList[i].getBoundingClientRect().top < window.innerHeight) {
+                    this.load(this.imgList[i]);
                 }
             }
         }
-        // 将loading图替换为真实地址，加载图片
-        load(el,index){
-            let src = el.getAttribute('data-src');
-            el.src = src;
-            //this.imgList.splice(index,1);
+        load(el) {
+            el.setAttribute('src', el.getAttribute("data-src"));
         }
     }
-    const lazy = new LazyLoad('.lazy')
 </script>
 </body>
 </html>

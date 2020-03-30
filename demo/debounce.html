@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .container {
+            width: 500px;
+            height:300px;
+            line-height: 300px;
+            background-color: #333333;
+            color: white;
+            font-size: 30px;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+</div>
+<script>
+    function debounce(func, delay) {
+        var timeout;
+        return function() {
+            var context = this;
+            var arguments = arguments;
+
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                func.apply(context, arguments);
+            }, delay)
+        }
+    }
+
+    var counter = 0;
+    var container = document.querySelector('div.container');
+    container.addEventListener("mousemove", debounce(function () {
+        this.innerHTML = counter++;
+    }, 300));
+</script>
+</body>
+</html>
