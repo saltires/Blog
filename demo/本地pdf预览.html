@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			iframe{
+				margin-top: 50px;
+				margin-left: 13px;
+			}
+			input{
+				position: fixed;
+				top: 20px;
+				left: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="file" id="input" multiple>
+		<iframe id="inlineFrameExample"
+		    title="Inline Frame Example"
+		    width="300"
+		    height="200"
+		    src="">
+		</iframe>
+	</body>
+	<script>
+		const inputElement = document.getElementById("input");
+		
+		inputElement.addEventListener("change", handleFiles, false);
+		
+		function handleFiles() {
+		  const fileList = this.files; /* now you can work with the file list */
+		  for (let i = 0, numFiles = fileList.length; i < numFiles; i++) {
+			// 这里的file即是File对象，可以直接传入URL.createObjectURL方法中并生成一个DOMString
+			const file = fileList[i];
+			console.log(file.type);
+			// obj_url是一个DOMString
+			const obj_url = URL.createObjectURL(file);
+			const iframe = document.getElementById('inlineFrameExample');
+			iframe.setAttribute('src', obj_url);
+			// DOMString的生命周期默认是在网页被关闭时结束，如果明确知道用不到该DOMString了，可以手动释放，减少浏览器的内存使用
+			URL.revokeObjectURL(obj_url);
+		  }
+		}
+	</script>
+</html>

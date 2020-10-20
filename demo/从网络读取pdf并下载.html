@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			input{
+				width:98px;
+				height:36px;
+				background:rgba(51,153,255,1);
+				border-radius:18px;
+				font-size: 16px;
+				color: #fff;
+				line-height: 36px;
+				text-align: center;
+				outline: none;
+				border: none;
+				position: absolute;
+				top: 27px;
+				left: 40px;
+			}
+			input:hover{
+				background:rgba(33,129,225,1);
+			}
+		</style>
+	</head>
+	<body>
+		<input type="submit" value="下载"></input>
+	</body>
+	<script type="text/javascript">
+		let url = 'https://s1.95171.cn/b/mha/img/pc/m_qr_app.v926104808.png';
+		let input = document.querySelector('input');
+		
+		let xhr = new XMLHttpRequest();
+		let path = '';
+		xhr.open("get", url);
+		xhr.responseType = "blob";
+		xhr.onload = function() { 
+			path = URL.createObjectURL(xhr.response);
+			const a = document.createElement('a');
+			a.setAttribute('download', '监测报告');
+			a.setAttribute('href', path);
+			a.click();
+		};
+		
+		input.addEventListener('click', () => {
+			xhr.send();
+		})
+	</script>
+</html>

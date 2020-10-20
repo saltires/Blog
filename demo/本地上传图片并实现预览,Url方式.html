@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+input{
+	margin-bottom: 10px;
+}
+.imgCom{
+    width: 300px;
+    height: 300px;
+    border: 1px solid #ccc;
+}
+.imgCom > img{
+    width: 100%;
+    height: 100%;
+}
+</style>
+</head>
+<body>
+    <input type="file" id= "file" />
+    <div class="imgCom" id= "imgCom" style="width" > </div>
+<script>
+    let eleFile = document.querySelector('#file');
+    function preview(file) {
+        // obj_url是一个DOMString
+        const obj_url = URL.createObjectURL(file);
+        document.getElementById('imgCom').innerHTML = '<img src="' + obj_url + '">'
+    }
+ 
+    eleFile.addEventListener('change', function (e) {
+        let file = e.target.files[0],
+        reg = /\.(png|jpg|gif|bmp)$/;
+        if (reg.test(file.name)) {
+            preview(file)
+        } else {
+            alert('选择正确格式的图片');
+        }
+    });
+</script>
+</body>
+</html>
