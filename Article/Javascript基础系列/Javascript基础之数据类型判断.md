@@ -4,6 +4,10 @@ typeof可以用来判断==原始数据类型==，如string、undefined、number�
 ```javascript
 typeof 'foobar' // string 可以判断
 typeof 99 // number 可以判断
+
+
+
+
 typeof true // boolean 可以判断
 typeof undefined // undefined 可以判断
 typeof function (){} // function 可以判断
