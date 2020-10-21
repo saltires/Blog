@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
+import '../index.scss'
+import { Button } from 'antd'
+
 
 export default class Home extends Component {
     render() {
         return (
-            <div>
-                这是Home组件
+            <div className="home">
+                <div className="qishi">
+                    <Button>home</Button>
+                </div>
             </div>
         )
     }
