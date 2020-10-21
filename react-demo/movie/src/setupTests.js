@@ -19,3 +19,4 @@ console.log(qs.stringify({
 
 console.log(qs.parse('a=b;c=d', { delimiter: ';' }))
 console.log(qs.parse('foo[bar]=baz'))
+
