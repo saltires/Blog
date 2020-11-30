@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="click">click me</button>
+    <script>
+        let result
+
+        const useRetrable = (fn, time, context) => {
+            return (...args) => {
+                fn.apply(test, args).then((item) => {
+                    context.result = item
+                }).catch((err) => {
+                    if (time === 0) {
+                        context.error = err
+                    } else {
+                        useRetrable(fn, --time, context).apply(context, ...args)
+                    }
+                })
+            }
+        }
+
+        const test = {
+            count: 0,
+            do() {
+                return new Promise((resolve, reject) => {
+                    if (this.count++ == 2) {
+                        resolve(this.count)
+                    } else {
+                        reject('次数不对')
+                    }
+                })
+            }
+        }
+
+        const it = useRetrable(test.do, 3, test)()
+        console.log(it)
+        console.log(result)
+
+        const test = () => {
+            let qishi
+            new Promise((resolve,reject) => {
+                qishi = 4
+                resolve(3)
+            }).then(item => console.log(item))
+
+            return qishi
+        }
+
+    </script>
+</body>
+
+</html>

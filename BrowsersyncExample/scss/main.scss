@@ -1,0 +1,9 @@
+$name: blue;
+
+body{
+    color: #000;
+    font-size: 48px;
+    h1{
+        color: $name;
+    }
+}
