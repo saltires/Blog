@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .inner{
+            width: 300px;
+            height: 300px;
+            background: red;
+        }
+        .outer{
+            width: 600px;
+            height: 600px;
+            background: blue;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="outer">
+        <div class="inner"></div>
+    </div>
+</body>
+<script>
+    // Let's get hold of those elements
+    var outer = document.querySelector('.outer');
+    var inner = document.querySelector('.inner');
+
+    // Let's listen for attribute changes on the
+    // outer element
+    new MutationObserver(function() {
+        console.log('mutate');
+    }).observe(outer, {
+        attributes: true,
+    });
+
+    // Here's a click listener…
+    function onClick() {
+        console.log('click' + +new Date());
+
+
+        // setTimeout(function() {
+        //     console.log('timeout1');
+        //     Promise.resolve().then(function() {
+        //         console.log('promise in timeout1');
+        //     });
+        // }, 0);
+
+        // setTimeout(function() {
+        //     console.log('timeout2');
+        //     Promise.resolve().then(function() {
+        //         console.log('promise in timeout2');
+        //     });
+        // }, 0);
+
+        // Promise.resolve().then(function() {
+        //     console.log('promise');
+        //     setTimeout(function(){
+        //         console.log('timeout in promise')
+        //     },0)
+        // });
+
+        
+
+        // outer.setAttribute('data-random', Math.random());
+    }
+
+    // …which we'll attach to both elements
+    inner.addEventListener('click', onClick);
+    outer.addEventListener('click', onClick);
+    inner.click()
+</script>
+
+</html>

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
         .container {
             width: 500px;
-            height:300px;
+            height: 300px;
             line-height: 300px;
             background-color: #333333;
             color: white;
@@ -16,29 +17,120 @@
         }
     </style>
 </head>
+
 <body>
-<div class="container">
+    <div id="container" class="container">
 
-</div>
-<script>
-    function debounce(func, delay) {
-        var timeout;
-        return function() {
-            var context = this;
-            var arguments = arguments;
+    </div>
+    <script>
+        // function debounce(func, delay) {
+        //     var timeout;
+        //     return function() {
+        //         var context = this;
+        //         var arguments = arguments;
 
-            clearTimeout(timeout);
-            timeout = setTimeout(function () {
-                func.apply(context, arguments);
-            }, delay)
+        //         clearTimeout(timeout);
+        //         timeout = setTimeout(function () {
+        //             func.apply(context, arguments);
+        //         }, delay)
+        //     }
+        // }
+
+        // var counter = 0;
+        // var container = document.querySelector('div.container');
+        // container.addEventListener("mousemove", debounce(function () {
+        //     this.innerHTML = counter++;
+        // }, 300));
+
+        // function debouce(func, wait, immediate) {
+        //     let timeout, result
+
+        //     const debounced = function() {
+        //         const context = this;
+        //         const args = arguments;
+
+        //         if (timeout) clearTimeout(timeout)
+
+        //         if (immediate) {
+        //             const callnow = !timeout
+        //             timeout = setTimeout(function() {
+        //                 timeout = null
+        //             }, wait)
+        //             if (callnow) result = func.apply(context, args)
+        //         } else {
+        //             timeout = setTimeout(function() {
+        //                 func.apply(context, args)
+        //             }, wait);
+        //         }
+
+        //         return result
+        //     }
+
+        //     debounced.cancel = function() {
+        //         clearTimeout(timeout)
+        //         timeout = null
+        //     }
+
+        //     return debounced
+        // }
+
+        function debounce(fn, time, immediate) {
+            let timeout, result
+
+            const debounced = function() {
+                const args = arguments
+                const that = this
+
+                if (timeout) clearTimeout(timeout)
+
+                if (immediate) {
+                    const callnow = !timeout
+                    timeout = setTimeout(function() {
+                        timeout = null
+                    }, time)
+                    if (callnow) result = fn.apply(that, args)
+                } else {
+                    timeout = setTimeout(function() {
+                        result = fn.apply(that, args)
+                    }, time)
+                }
+
+                return result
+            }
+
+            debounced.cancel = function() {
+                clearTimeout(timeout)
+                timeout = null
+            }
+
+            return debounced
         }
-    }
 
-    var counter = 0;
-    var container = document.querySelector('div.container');
-    container.addEventListener("mousemove", debounce(function () {
-        this.innerHTML = counter++;
-    }, 300));
-</script>
+        function throttle(fn, wait) {
+            let previos = 0
+            let result
+
+            return function() {
+                const now = +new Date()
+                if (now - wait > previos) {
+                    result = fn.apply(this, arguments)
+                    previos = now
+
+                    return result
+                }
+            }
+        }
+
+        var count = 1;
+        var container = document.getElementById('container');
+
+        function getUserAction() {
+            console.log(this)
+            container.innerHTML = count++;
+        };
+
+        container.onmousemove = throttle(getUserAction, 2000);
+    </script>
 </body>
+
 </html>
